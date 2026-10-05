@@ -7,31 +7,40 @@
   <meta name="description" content="Smart Escape — interactive evacuation route simulator (educational)." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
-      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
-        <rect x="1" y="1" width="30" height="30" rx="7" fill="var(--exit)" />
-        <path d="M9 23V9h8M9 16h6M19 13l4 3-4 3M17 16h6" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-      <div>
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M5 20V4h8M5 12h5M14 8l4 4-4 4M11 12h7" /></svg>
+      </span>
+      <div class="brand-text">
         <h1 data-i18n="appName">Smart Escape</h1>
-        <p class="tagline" data-i18n="tagline"></p>
+        <span class="tagline" data-i18n="tagline"></span>
       </div>
     </div>
+
     <div class="top-actions">
-      <label class="btn btn-secondary" for="fileInput">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v3h16v-3" /></svg>
+      <button type="button" class="btn btn-outline" id="sampleBtn">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" /></svg>
+        <span data-i18n="loadSample"></span>
+      </button>
+      <label class="btn btn-primary" for="fileInput">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m0 0L7 8m5-5 5 5M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4" /></svg>
         <span data-i18n="importFile"></span>
       </label>
       <input type="file" id="fileInput" accept=".json,application/json" class="visually-hidden" />
-      <button type="button" class="btn btn-ghost" id="sampleBtn" data-i18n="loadSample"></button>
+      <span class="divider" aria-hidden="true"></span>
+      <button type="button" class="icon-btn" id="contrastBtn" aria-pressed="false">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 3a9 9 0 0 1 0 18z" class="fill" /></svg>
+      </button>
       <button type="button" class="lang-toggle" id="langBtn" role="switch">
-        <span class="lang-thumb" aria-hidden="true"></span>
         <span class="lang-opt" lang="en">EN</span>
+        <span class="lang-track" aria-hidden="true">
+          <span class="lang-thumb"></span>
+        </span>
         <span class="lang-opt" lang="bn">বাংলা</span>
       </button>
     </div>
@@ -40,45 +49,68 @@
   <div id="banner" class="banner" role="alert" hidden></div>
 
   <main class="layout">
-    <section class="map-pane" aria-labelledby="buildingName">
-      <div class="map-head">
-        <div>
+    <section class="panel map-panel" aria-labelledby="buildingName">
+      <div class="panel-head">
+        <div class="title-block">
           <h2 id="buildingName"></h2>
-          <p class="muted" id="buildingMeta"></p>
+          <span class="meta" id="buildingMeta"></span>
         </div>
-        <div class="mode" role="radiogroup" id="modeGroup">
-          <span class="mode-label" data-i18n="modeLabel"></span>
-          <button type="button" role="radio" class="mode-btn" data-mode="start" data-i18n="modeStart"></button>
-          <button type="button" role="radio" class="mode-btn" data-mode="hazard" data-i18n="modeHazard"></button>
+        <div class="segmented" role="radiogroup" id="modeGroup">
+          <button type="button" role="radio" class="seg-btn" data-mode="start">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="10" r="3" /><path d="M12 21s-7-6.2-7-11a7 7 0 0 1 14 0c0 4.8-7 11-7 11z" /></svg>
+            <span data-i18n="modeStart"></span>
+          </button>
+          <button type="button" role="radio" class="seg-btn" data-mode="hazard">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l9 16H3z" /><path d="M12 10v4M12 17v.01" /></svg>
+            <span data-i18n="modeHazard"></span>
+          </button>
         </div>
+        <button type="button" class="icon-btn" id="exportBtn">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2" /><circle cx="9" cy="10" r="2" /><path d="M21 16l-5-5-9 9" /></svg>
+        </button>
       </div>
-      <p class="hint" id="hint"></p>
-      <div class="map-wrap" id="mapWrap">
+
+      <div class="canvas" id="mapWrap">
+        <p class="hint" id="hint"></p>
         <div class="empty" id="emptyState">
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V8l9-5 9 5v13M9 21v-6h6v6" /></svg>
+          <span class="empty-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24"><path d="M3 21V9l9-6 9 6v12M9 21v-6h6v6" /></svg>
+          </span>
           <h3 data-i18n="emptyTitle"></h3>
           <p data-i18n="emptyBody"></p>
+          <div class="empty-actions">
+            <!-- Label for the same hidden file input as the header button -->
+            <label class="btn btn-primary" for="fileInput">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 15V3m0 0L7 8m5-5 5 5M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4" /></svg>
+              <span data-i18n="importFile"></span>
+            </label>
+            <button type="button" class="btn btn-outline" id="emptySampleBtn">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h10" /></svg>
+              <span data-i18n="loadSample"></span>
+            </button>
+          </div>
         </div>
         <svg id="map" role="group" hidden></svg>
+        <ul class="legend" id="legend"></ul>
       </div>
-      <ul class="legend" id="legend" aria-label="Legend"></ul>
     </section>
 
     <aside class="side">
-      <section class="card">
-        <label class="field-label" for="startSelect" data-i18n="startLabel"></label>
-        <select id="startSelect"></select>
+      <section class="panel route-panel" id="routeCard" aria-live="polite">
+        <div class="field">
+          <label class="label" for="startSelect" data-i18n="startLabel"></label>
+          <div class="select-wrap">
+            <select id="startSelect"></select>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" /></svg>
+          </div>
+        </div>
+        <div class="route-body" id="routeBody"></div>
       </section>
 
-      <section class="card route-card" id="routeCard" aria-live="polite">
-        <h2 class="card-title" data-i18n="routeTitle"></h2>
-        <div id="routeBody"></div>
-      </section>
-
-      <section class="card">
-        <div class="card-row">
-          <h2 class="card-title" data-i18n="hazardsTitle"></h2>
-          <button type="button" class="btn btn-small" id="resetBtn">
+      <section class="panel">
+        <div class="row-between">
+          <h2 class="section-title" data-i18n="hazardsTitle"></h2>
+          <button type="button" class="btn btn-outline btn-sm" id="resetBtn">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4" /></svg>
             <span data-i18n="reset"></span>
           </button>
@@ -86,7 +118,14 @@
         <div id="hazardList"></div>
       </section>
 
-      <p class="disclaimer" data-i18n="disclaimer"></p>
+      <p class="disclaimer">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" /><path d="M12 8v.01M12 11v5" /></svg>
+        <span data-i18n="disclaimer"></span>
+      </p>
+      <p class="disclaimer" id="savedNote" hidden>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12l5 5 9-10" /></svg>
+        <span data-i18n="savedNote"></span>
+      </p>
     </aside>
   </main>
 

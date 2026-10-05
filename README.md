@@ -35,9 +35,13 @@ Sample checks (all pass): R1 → `R1-C1-C2-E1` cost 7 · block C2 → `R1-C1-C3-
 
 ## Bonus features
 
+- **Alternative routes** — the cheapest route to every other reachable exit is listed with its cost difference; click one to preview it as a dashed line on the map.
+- **Route walkthrough** — "Walk route" moves a marker along the route corridor by corridor while the path list highlights each step (step-by-step jumps when reduced motion is on).
+- **PNG export** — download the current map, route and hazards as a PNG.
+- **Saving progress** — the loaded building, start, hazards and mode are saved in localStorage and restored (and re-validated) on reload.
+- **High-contrast mode** — toggle in the header; stronger lines, borders and text. Saved per browser.
 - Keyboard accessible map (Tab to nodes/corridors, Enter/Space to act), visible focus rings, ARIA labels.
-- Removable hazard tags in the side panel.
-- Responsive layout for tablet and mobile.
+- Removable hazard tags in the side panel; responsive layout for tablet and mobile.
 
 ## Screenshots
 

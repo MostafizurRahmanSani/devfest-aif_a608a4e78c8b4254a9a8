@@ -99,49 +99,63 @@ function dijkstra(adj, source) {
   return dist;
 }
 
-// state: { start, blockedNodes:Set, blockedEdges:Set, closedExits:Set }
-// Returns { status: "noStart"|"startBlocked"|"noRoute"|"ok", path, exit, cost, edgeIds }
-function findRoute(data, state) {
-  const { start } = state;
-  if (!start) return { status: "noStart" };
+// Lowest-cost route from start to one specific exit, or null if unreachable.
+// Other exits are not crossed, so each route really ends at its own exit.
+// (The overall best route never crosses another exit anyway: costs are positive.)
+function routeToExit(data, state, exit) {
   const unusable = (id) => state.blockedNodes.has(id) || state.closedExits.has(id);
-  if (unusable(start)) return { status: "startBlocked" };
+  const type = new Map(data.nodes.map((n) => [n.id, n.type]));
+  const skip = (id) => unusable(id) || (type.get(id) === "exit" && id !== exit);
 
   const adj = new Map(data.nodes.map((n) => [n.id, []]));
   for (const e of data.edges) {
-    if (state.blockedEdges.has(e.id) || unusable(e.from) || unusable(e.to)) continue;
+    if (state.blockedEdges.has(e.id) || skip(e.from) || skip(e.to)) continue;
     adj.get(e.from).push({ to: e.to, cost: e.cost, edge: e.id });
     adj.get(e.to).push({ to: e.from, cost: e.cost, edge: e.id });
   }
-
-  const fromStart = dijkstra(adj, start);
-  // Cheapest open exit; ties -> smallest exit ID
-  let best = null;
-  for (const n of data.nodes) {
-    if (n.type !== "exit" || !fromStart.has(n.id)) continue;
-    const d = fromStart.get(n.id);
-    if (!best || d < best.cost || (d === best.cost && n.id < best.exit)) best = { exit: n.id, cost: d };
-  }
-  if (!best) return { status: "noRoute" };
+  const fromStart = dijkstra(adj, state.start);
+  if (!fromStart.has(exit)) return null;
+  const cost = fromStart.get(exit);
 
   // Walk forward picking the smallest next ID that stays on a shortest path,
   // which yields the lexicographically smallest node sequence among ties.
-  const toExit = dijkstra(adj, best.exit);
-  const path = [start];
+  const toExit = dijkstra(adj, exit);
+  const path = [state.start];
   const edgeIds = [];
-  let u = start;
-  while (u !== best.exit) {
+  let u = state.start;
+  while (u !== exit) {
     let next = null;
     for (const a of adj.get(u)) {
       if (!toExit.has(a.to)) continue;
-      if (fromStart.get(u) + a.cost + toExit.get(a.to) !== best.cost) continue;
+      if (fromStart.get(u) + a.cost + toExit.get(a.to) !== cost) continue;
       if (!next || a.to < next.to) next = a;
     }
     path.push(next.to);
     edgeIds.push(next.edge);
     u = next.to;
   }
-  return { status: "ok", path, exit: best.exit, cost: best.cost, edgeIds };
+  return { exit, cost, path, edgeIds };
 }
 
-if (typeof module !== "undefined") module.exports = { validateBuilding, findRoute };
+// state: { start, blockedNodes:Set, blockedEdges:Set, closedExits:Set }
+// Returns { status, routes } — routes to every reachable open exit, best first
+// (lower cost, then smaller exit ID). routes[0] is the official answer.
+function findRoutes(data, state) {
+  const { start } = state;
+  if (!start) return { status: "noStart", routes: [] };
+  if (state.blockedNodes.has(start) || state.closedExits.has(start)) return { status: "startBlocked", routes: [] };
+  const routes = data.nodes
+    .filter((n) => n.type === "exit" && !state.closedExits.has(n.id))
+    .map((n) => routeToExit(data, state, n.id))
+    .filter(Boolean)
+    .sort((a, b) => a.cost - b.cost || (a.exit < b.exit ? -1 : 1));
+  return { status: routes.length ? "ok" : "noRoute", routes };
+}
+
+// Returns { status: "noStart"|"startBlocked"|"noRoute"|"ok", path, exit, cost, edgeIds }
+function findRoute(data, state) {
+  const r = findRoutes(data, state);
+  return r.status === "ok" ? { status: "ok", ...r.routes[0] } : { status: r.status };
+}
+
+if (typeof module !== "undefined") module.exports = { validateBuilding, findRoute, findRoutes };
