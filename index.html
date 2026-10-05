@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Smart Escape</title>
+  <meta name="description" content="Smart Escape — interactive evacuation route simulator (educational)." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Hind+Siliguri:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="1" y="1" width="30" height="30" rx="7" fill="var(--exit)" />
+        <path d="M9 23V9h8M9 16h6M19 13l4 3-4 3M17 16h6" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+      <div>
+        <h1 data-i18n="appName">Smart Escape</h1>
+        <p class="tagline" data-i18n="tagline"></p>
+      </div>
+    </div>
+    <div class="top-actions">
+      <label class="btn btn-secondary" for="fileInput">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v3h16v-3" /></svg>
+        <span data-i18n="importFile"></span>
+      </label>
+      <input type="file" id="fileInput" accept=".json,application/json" class="visually-hidden" />
+      <button type="button" class="btn btn-ghost" id="sampleBtn" data-i18n="loadSample"></button>
+      <button type="button" class="btn btn-lang" id="langBtn"></button>
+    </div>
+  </header>
+
+  <div id="banner" class="banner" role="alert" hidden></div>
+
+  <main class="layout">
+    <section class="map-pane" aria-labelledby="buildingName">
+      <div class="map-head">
+        <div>
+          <h2 id="buildingName"></h2>
+          <p class="muted" id="buildingMeta"></p>
+        </div>
+        <div class="mode" role="radiogroup" id="modeGroup">
+          <span class="mode-label" data-i18n="modeLabel"></span>
+          <button type="button" role="radio" class="mode-btn" data-mode="start" data-i18n="modeStart"></button>
+          <button type="button" role="radio" class="mode-btn" data-mode="hazard" data-i18n="modeHazard"></button>
+        </div>
+      </div>
+      <p class="hint" id="hint"></p>
+      <div class="map-wrap" id="mapWrap">
+        <div class="empty" id="emptyState">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V8l9-5 9 5v13M9 21v-6h6v6" /></svg>
+          <h3 data-i18n="emptyTitle"></h3>
+          <p data-i18n="emptyBody"></p>
+        </div>
+        <svg id="map" role="group" hidden></svg>
+      </div>
+      <ul class="legend" id="legend" aria-label="Legend"></ul>
+    </section>
+
+    <aside class="side">
+      <section class="card">
+        <label class="field-label" for="startSelect" data-i18n="startLabel"></label>
+        <select id="startSelect"></select>
+      </section>
+
+      <section class="card route-card" id="routeCard" aria-live="polite">
+        <h2 class="card-title" data-i18n="routeTitle"></h2>
+        <div id="routeBody"></div>
+      </section>
+
+      <section class="card">
+        <div class="card-row">
+          <h2 class="card-title" data-i18n="hazardsTitle"></h2>
+          <button type="button" class="btn btn-small" id="resetBtn">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4" /></svg>
+            <span data-i18n="reset"></span>
+          </button>
+        </div>
+        <div id="hazardList"></div>
+      </section>
+
+      <p class="disclaimer" data-i18n="disclaimer"></p>
+    </aside>
+  </main>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/graph.js"></script>
+  <script src="js/sample.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

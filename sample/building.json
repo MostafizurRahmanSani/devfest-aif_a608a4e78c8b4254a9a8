@@ -1,0 +1,122 @@
+{
+  "building": "East Annex - Practice Building",
+  "nodes": [
+    {
+      "id": "R1",
+      "label": "Room 101",
+      "type": "room",
+      "x": 60,
+      "y": 65
+    },
+    {
+      "id": "R2",
+      "label": "Room 102",
+      "type": "room",
+      "x": 60,
+      "y": 185
+    },
+    {
+      "id": "C1",
+      "label": "Junction A",
+      "type": "junction",
+      "x": 190,
+      "y": 65
+    },
+    {
+      "id": "C2",
+      "label": "Junction B",
+      "type": "junction",
+      "x": 325,
+      "y": 65
+    },
+    {
+      "id": "C3",
+      "label": "Junction C",
+      "type": "junction",
+      "x": 190,
+      "y": 185
+    },
+    {
+      "id": "C4",
+      "label": "Junction D",
+      "type": "junction",
+      "x": 325,
+      "y": 185
+    },
+    {
+      "id": "E1",
+      "label": "North Exit",
+      "type": "exit",
+      "x": 445,
+      "y": 65
+    },
+    {
+      "id": "E2",
+      "label": "South Exit",
+      "type": "exit",
+      "x": 445,
+      "y": 185
+    }
+  ],
+  "edges": [
+    {
+      "id": "L01",
+      "from": "R1",
+      "to": "C1",
+      "cost": 2
+    },
+    {
+      "id": "L02",
+      "from": "C1",
+      "to": "C2",
+      "cost": 3
+    },
+    {
+      "id": "L03",
+      "from": "C2",
+      "to": "E1",
+      "cost": 2
+    },
+    {
+      "id": "L04",
+      "from": "R1",
+      "to": "R2",
+      "cost": 4
+    },
+    {
+      "id": "L05",
+      "from": "R2",
+      "to": "C3",
+      "cost": 2
+    },
+    {
+      "id": "L06",
+      "from": "C3",
+      "to": "C4",
+      "cost": 3
+    },
+    {
+      "id": "L07",
+      "from": "C4",
+      "to": "E2",
+      "cost": 2
+    },
+    {
+      "id": "L08",
+      "from": "C1",
+      "to": "C3",
+      "cost": 4
+    },
+    {
+      "id": "L09",
+      "from": "C2",
+      "to": "C4",
+      "cost": 3
+    }
+  ],
+  "initial_state": {
+    "blocked_nodes": [],
+    "blocked_edges": [],
+    "closed_exits": []
+  }
+}
