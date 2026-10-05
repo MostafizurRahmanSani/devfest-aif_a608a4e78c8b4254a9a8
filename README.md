@@ -4,7 +4,7 @@ AI DevFest 2026 mock test (solo vibe-coding).
 
 - **Name:** Mostafizur Rahman Sani
 - **Registration number:** aif_a608a4e78c8b4254a9a8
-- **Live link:** https://mostafizurrahmansani.github.io/devfest-aif_a608a4e78c8b4254a9a8/
+- **Live link:** https://devfest-aifa608a4e78c8b4254a9a8.vercel.app/
 
 > Smart Escape is an educational simulation, not a certified real-world evacuation planning tool.
 
@@ -15,7 +15,7 @@ No build step and no dependencies — plain HTML, CSS and JavaScript.
 - Open `index.html` directly in Chrome, **or**
 - serve the folder statically, e.g. `npx serve .` / `python -m http.server`, and open the printed URL.
 
-Deployed as a static site on GitHub Pages from the `main` branch root.
+Deployed as a static site on Vercel from the `main` branch (no build step).
 
 ## Main features (all mandatory tasks)
 
@@ -45,9 +45,17 @@ Sample checks (all pass): R1 → `R1-C1-C2-E1` cost 7 · block C2 → `R1-C1-C3-
 
 ## Screenshots
 
-- `screenshots/baseline-R1.png` — baseline route from R1 (cost 7)
-- `screenshots/reroute-C2-blocked.png` — rerouting after C2 is blocked (cost 11)
-- `screenshots/bangla-mode.png` — Bangla mode
+**Baseline route from R1** — R1 → C1 → C2 → E1, cost 7
+
+![Baseline route from R1, cost 7](screenshots/baseline-R1.png)
+
+**Rerouting after C2 is blocked** — R1 → C1 → C3 → C4 → E2, cost 11
+
+![Rerouting after C2 is blocked, cost 11](screenshots/reroute-C2-blocked.png)
+
+**Bangla mode**
+
+![Bangla mode](screenshots/bangla-mode.png)
 
 ## Known issues
 
