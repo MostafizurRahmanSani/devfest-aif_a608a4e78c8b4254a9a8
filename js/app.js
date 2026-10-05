@@ -118,9 +118,10 @@ function render() {
 function applyStaticText() {
   document.querySelectorAll("[data-i18n]").forEach((el) => { el.textContent = t(el.dataset.i18n); });
   const lb = $("langBtn");
-  lb.textContent = t("langSwitch");
+  // Switch is "on" in Bangla mode; the thumb slides via CSS
+  lb.dataset.lang = LANG;
+  lb.setAttribute("aria-checked", String(LANG === "bn"));
   lb.setAttribute("aria-label", t("langSwitchLabel"));
-  lb.lang = LANG === "en" ? "bn" : "en";
   $("map").setAttribute("aria-label", t("mapLabel"));
   $("legend").setAttribute("aria-label", t("legend"));
   document.title = t("appName");

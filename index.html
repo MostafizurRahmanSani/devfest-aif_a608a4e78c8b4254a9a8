@@ -29,7 +29,11 @@
       </label>
       <input type="file" id="fileInput" accept=".json,application/json" class="visually-hidden" />
       <button type="button" class="btn btn-ghost" id="sampleBtn" data-i18n="loadSample"></button>
-      <button type="button" class="btn btn-lang" id="langBtn"></button>
+      <button type="button" class="lang-toggle" id="langBtn" role="switch">
+        <span class="lang-thumb" aria-hidden="true"></span>
+        <span class="lang-opt" lang="en">EN</span>
+        <span class="lang-opt" lang="bn">বাংলা</span>
+      </button>
     </div>
   </header>
 

@@ -62,8 +62,26 @@ button, select, input { font: inherit; color: inherit; }
 .btn-secondary:hover { background: #096a41; }
 .btn-ghost { background: transparent; color: #fff; border-color: #4a5866; }
 .btn-ghost:hover { background: #24313d; }
-.btn-lang { background: #fff; color: var(--ink); min-width: 92px; justify-content: center; }
-.btn-lang:hover { background: #e9e6df; }
+/* Language switch: two labels on a track, a white thumb slides under the active one */
+.lang-toggle {
+  position: relative; display: inline-grid; grid-template-columns: 1fr 1fr; align-items: center;
+  min-height: 44px; padding: 4px; border: 1px solid #4a5866; border-radius: 999px;
+  background: #24313d; cursor: pointer; isolation: isolate;
+}
+.lang-toggle:hover { border-color: #8a97a4; }
+.lang-thumb {
+  position: absolute; z-index: -1; top: 4px; bottom: 4px; left: 4px; width: calc(50% - 4px);
+  border-radius: 999px; background: #fff; box-shadow: 0 1px 3px rgba(0, 0, 0, .35);
+  transition: transform .25s cubic-bezier(.3, .7, .4, 1);
+}
+.lang-toggle[data-lang="bn"] .lang-thumb { transform: translateX(100%); }
+.lang-opt {
+  min-width: 64px; padding: 0 14px; text-align: center; font-weight: 600; font-size: 14px;
+  line-height: 34px; color: #c9d1d9; transition: color .2s;
+}
+.lang-opt[lang="bn"] { font-family: "Hind Siliguri", sans-serif; }
+.lang-toggle[data-lang="en"] .lang-opt[lang="en"],
+.lang-toggle[data-lang="bn"] .lang-opt[lang="bn"] { color: var(--ink); }
 .btn-small { min-height: 40px; padding: 0 12px; font-size: 14px; background: var(--surface); border-color: var(--line); }
 .btn-small:hover:not(:disabled) { border-color: var(--ink); }
 .btn:disabled { opacity: .45; cursor: not-allowed; }
