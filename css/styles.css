@@ -159,6 +159,7 @@ button, select, input { font: inherit; color: inherit; }
 .start-ring { fill: none; stroke: var(--primary); stroke-width: 3; animation: ring 1.8s ease-out infinite; transform-origin: center; }
 
 .node.is-blocked .shape { fill: var(--hazard-bg); stroke: var(--hazard); stroke-dasharray: 5 4; }
+.node.is-blocked .node-id, .node.is-closed .node-id { paint-order: stroke; stroke: #fff; stroke-width: 4px; }
 .node.is-blocked .node-id { fill: var(--hazard); }
 .node.is-closed .shape { fill: #e5e7eb; stroke: var(--closed); stroke-dasharray: 5 4; }
 .node.is-closed .node-id { fill: var(--closed); }

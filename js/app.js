@@ -239,8 +239,9 @@ function renderMap(route) {
     if (n.type === "room") g.appendChild(el("rect", { x: -R, y: -R, width: R * 2, height: R * 2, rx: 6, class: "shape" }));
     else if (n.type === "junction") g.appendChild(el("circle", { r: R - 3, class: "shape" }));
     else g.appendChild(el("circle", { r: R + 2, class: "shape" }));
-    g.appendChild(el("text", { class: "node-id", y: 4.5, "text-anchor": "middle" }, n.id));
+    // Slash under the ID so the ID stays readable
     if (blocked || closed) g.appendChild(el("path", { d: `M-${R - 4} -${R - 4}L${R - 4} ${R - 4}`, class: "slash" }));
+    g.appendChild(el("text", { class: "node-id", y: 4.5, "text-anchor": "middle" }, n.id));
     g.appendChild(el("text", { class: "node-label", y: R + 18, "text-anchor": "middle" }, n.label));
     activate(g, () => onNode(n.id));
     gNodes.appendChild(g);
